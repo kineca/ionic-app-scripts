@@ -65,7 +65,12 @@ exports.getFileNames = getFileNames;
  */
 function getTsLintConfig(tsLintConfig, linterOptions) {
     var config = tslint_1.Configuration.loadConfigurationFromPath(tsLintConfig);
-    Object.assign(config, util_1.isObject(linterOptions) ? { linterOptions: linterOptions } : {});
+    var userLinterOptions = util_1.isObject(config.linterOptions) ? config.linterOptions : {};
+    var ionicLinterOptions = util_1.isObject(linterOptions) ? linterOptions : {};
+    var mergedLinterOptions = Object.assign(userLinterOptions, ionicLinterOptions);
+    if (Object.keys(mergedLinterOptions).length > 0) {
+        Object.assign(config, { linterOptions: mergedLinterOptions });
+    }
     return config;
 }
 exports.getTsLintConfig = getTsLintConfig;

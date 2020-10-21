@@ -42,6 +42,23 @@ describe('lint factory', function () {
                 typeCheck: true
             });
         });
+        it('should extend configuration with {linterOptions} if provided (need merge)', function () {
+            var tsConfigFilePath = 'tsconfig.json';
+            var mockConfig = {
+                rulesDirectory: ['node_modules/@ionic'],
+                linterOptions: {
+                    exclude: ['hoge']
+                }
+            };
+            spyOn(tslint_1.Configuration, tslint_1.Configuration.loadConfigurationFromPath.name).and.returnValue(mockConfig);
+            var config = lint_factory_1.getTsLintConfig(tsConfigFilePath, {
+                typeCheck: true
+            });
+            expect(config.linterOptions).toEqual({
+                typeCheck: true,
+                exclude: ['hoge']
+            });
+        });
     });
     describe('createLinter()', function () {
         it('should create a Linter', function () {
